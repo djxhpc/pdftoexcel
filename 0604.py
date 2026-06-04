@@ -7,6 +7,7 @@ from PIL import Image, ImageEnhance, ImageFilter
 import numpy as np
 from opencc import OpenCC
 
+
 cc = OpenCC('s2twp')
 
 try:
@@ -127,6 +128,7 @@ def normalize_table_rows(table_rows):
                 normalized_row.append("")
             else:
                 normalized_row.append(cell)
+                
         normalized_rows.append(normalized_row)
     return normalized_rows
 
@@ -316,6 +318,7 @@ def process_pdf_to_excel(pdf_path, excel_path):
     with pdfplumber.open(pdf_path) as pdf:
         for i, page in enumerate(pdf.pages):
             page_num = i + 1
+            page = page.dedupe_chars(tolerance=3, extra_attrs=None)
             sheet_name = f"Page_{page_num}"
             ws = wb.create_sheet(title=sheet_name)
             
